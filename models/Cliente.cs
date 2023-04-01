@@ -1,4 +1,6 @@
-﻿namespace FacturacionHogar.Dominio.modelos
+﻿using System.Text.Json.Serialization;
+
+namespace FacturacionHogar.Dominio.modelos
 {
     public class Cliente
     {

@@ -1,4 +1,5 @@
 ﻿using FacturacionHogar.Interfaces;
+using FacturacionHogar.models;
 using SelectPdf;
 
 
@@ -7,11 +8,15 @@ namespace FacturacionHogar.Services
     public class ConvertPDF : IConvertPdf
     {
         private readonly IWebHostEnvironment env;
+        private readonly string ruta;
+        private readonly string path;
+
 
         private string html;
         public ConvertPDF(IWebHostEnvironment _env)
         {
             env = _env;
+            #region htmlPlantilla
             html = @"<!DOCTYPE html> <html lang=""en""><head> <meta charset=""UTF-8""><meta http-equiv=""X-UA-Compatible"" content=""IE=edge""><meta name=""viewport"" content=""width=device-width, initial-scale=1.0""><!-- CSS only --><link href=""@ruta\bootstrap.min.css"" rel=""stylesheet"" type=""text/css""><!-- JavaScript Bundle with Popper --><script type=""text/javascript"" src=""@ruta\bootstrap.bundle.min.js""></script><link href=""@ruta\bootstrap-icons.css"" rel=""stylesheet"" type=""text/css""><title>Formulario</title></head> 
    <style>
         .container {
@@ -302,31 +307,64 @@ namespace FacturacionHogar.Services
     </div>
 </body>
 ";
-
+            #endregion
+            ruta = env.ContentRootPath + "\\htmlHelper\\";
+            html = html.Replace("@ruta", ruta);
+            path = @"C:\Recibos\reciboArrendamientoEnBlanco.pdf";
         }
 
 
-        public string getHtmlExample()
+        public async Task<Response<string>> GetHtmlExample()
         {
-            string ruta = env.ContentRootPath + "\\htmlHelper\\";
-            html = html.Replace("@ruta", ruta);
-            HtmlToPdf convert = new HtmlToPdf();
-            convert.Options.PdfPageSize = PdfPageSize.Note;
-            convert.Options.PdfPageOrientation = PdfPageOrientation.Landscape;
-            convert.Options.MarginTop = 0;
-            convert.Options.MarginLeft = 0;
-            convert.Options.MarginRight = -300;
-            convert.Options.MarginBottom = -300;
-            //convert.Options.CssMediaType = SelectPdf.HtmlToPdfCssMediaType.Print;
-            //convert.Options.EmbedFonts = true;
-            //convert.Options.ExternalLinksEnabled = true;
-            //convert.Options.InternalLinksEnabled = true;
-            //convert.Options.JavaScriptEnabled = true;
-            convert.Options.MinPageLoadTime = 3;
-            PdfDocument doc = convert.ConvertHtmlString(html);
-            doc.Save(@"C:\Recibos\reciboArrendamientoEnBlanco.pdf");
-            doc.Close();
-            return html;
+            Response<string> response = new();
+            try
+            {
+                response.result = html;
+            }
+            catch (Exception ex)
+            {
+                response = new Response<string>(ex);
+                response.message = "fallo en el metodo GetHtmlExample servicio ConvertPDF";
+
+            }
+            return await Task.FromResult(response);
+        }
+
+        private bool generatePdf()
+        {
+            try
+            {
+                HtmlToPdf convert = new HtmlToPdf();
+                convert.Options.PdfPageSize = PdfPageSize.Note;
+                convert.Options.PdfPageOrientation = PdfPageOrientation.Landscape;
+                convert.Options.MarginTop = 0;
+                convert.Options.MarginLeft = 0;
+                convert.Options.MarginRight = -300;
+                convert.Options.MarginBottom = -300;
+                convert.Options.MinPageLoadTime = 3;
+                PdfDocument doc = convert.ConvertHtmlString(html);
+                doc.Save(path);
+                doc.Close();
+            }
+            catch (Exception)
+            {
+                return false;
+
+            }
+            return true;
         }
     }
 }
+/*
+cosas que pueden ser utiles para el documento
+ 
+convert.Options.CssMediaType = SelectPdf.HtmlToPdfCssMediaType.Print;
+ 
+convert.Options.EmbedFonts = true;
+ 
+convert.Options.ExternalLinksEnabled = true;
+ 
+convert.Options.InternalLinksEnabled = true;
+ 
+convert.Options.JavaScriptEnabled = true;
+ */

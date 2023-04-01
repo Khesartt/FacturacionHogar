@@ -1,4 +1,5 @@
 ﻿using FacturacionHogar.Interfaces;
+using FacturacionHogar.models;
 using Microsoft.AspNetCore.Mvc;
 namespace FacturacionHogar.Controllers
 {
@@ -14,10 +15,13 @@ namespace FacturacionHogar.Controllers
         }
 
         [HttpGet("getExample")]
-        public string GetAll()
+        public Response<string> GetAll()
         {
-            return convertPdf.getHtmlExample();
+            return convertPdf.GetHtmlExample().Result;
         }
+
+
+
         //// GET: api/Countries
         //[HttpGet("getCountries")]
         //public Respond<Country> Getcountries()

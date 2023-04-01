@@ -1,7 +1,9 @@
-﻿namespace FacturacionHogar.Interfaces
+﻿using FacturacionHogar.models;
+
+namespace FacturacionHogar.Interfaces
 {
     public interface IConvertPdf
     {
-        public string getHtmlExample();
+        Task<Response<string>> GetHtmlExample();
     }
 }
