@@ -2,6 +2,7 @@
 using FacturacionHogar.Dominio.modelos;
 using FacturacionHogar.Interfaces;
 using FacturacionHogar.models;
+using FacturacionHogar.models.DTO_s;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
@@ -16,92 +17,85 @@ namespace FacturacionHogar.Services
         {
             db = _db;
         }
-        public async Task<Response<bool>> ActualizarCliente(Cliente cliente)
+        public async Task<Response<bool>> ActualizarCliente(ClienteUpdateDto cliente)
         {
             Response<bool> response = new();
 
-            #region validarCorreo
             try
             {
-                if (cliente.correo != null)
+                var direccionCorreo = new MailAddress((string.IsNullOrEmpty(cliente.correo) ? "" : cliente.correo));
+
+                #region actualizarCliente
+                try
                 {
-                    var direccionCorreo = new MailAddress(cliente.correo);
+                    Cliente clienteToUpdate = await db.cliente.Where(x => x.id == cliente.id).FirstOrDefaultAsync();
+
+                    if (clienteToUpdate != null)
+                    {
+                        clienteToUpdate.id = clienteToUpdate.id;
+                        clienteToUpdate.nombres = string.IsNullOrEmpty(cliente.nombres) ? clienteToUpdate.nombres : cliente.nombres;
+                        clienteToUpdate.cedula = string.IsNullOrEmpty(cliente.cedula) ? clienteToUpdate.cedula : cliente.cedula;
+                        clienteToUpdate.celular = string.IsNullOrEmpty(cliente.celular) ? clienteToUpdate.celular : cliente.celular;
+                        clienteToUpdate.correo = string.IsNullOrEmpty(cliente.correo) ? clienteToUpdate.correo : cliente.correo;
+                        clienteToUpdate.fechaActualizacion = DateTime.Now;
+                        await db.SaveChangesAsync();
+                        response.result = true;
+                    }
+                    else
+                    {
+                        response.result = false;
+                        response.message = "no se encontro el cliente [ClienteService => ActualizarCliente]";
+                        response.existError = true;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    response = new Response<bool>(ex);
+                    response.message = "error no controlado [ClienteService => ActualizarCliente]";
+                }
+                #endregion
             }
-            catch (FormatException ex)
+            catch (Exception ex)
             {
                 response = new Response<bool>(ex);
                 response.message = "el correo no tiene el formato correcto [ClienteService => ActualizarCliente]";
             }
-            #endregion
-
-            #region actualizarCliente
-            try
-            {
-                Cliente clienteToUpdate = await db.cliente.Where(x => x.id == cliente.id).FirstOrDefaultAsync();
-
-                if (clienteToUpdate != null)
-                {
-                    clienteToUpdate.id = clienteToUpdate.id;
-                    clienteToUpdate.nombres = string.IsNullOrEmpty(cliente.nombres) ? clienteToUpdate.nombres : cliente.nombres;
-                    clienteToUpdate.cedula = string.IsNullOrEmpty(cliente.cedula) ? clienteToUpdate.cedula : cliente.cedula;
-                    clienteToUpdate.celular = string.IsNullOrEmpty(cliente.celular) ? clienteToUpdate.celular : cliente.celular;
-                    clienteToUpdate.correo = string.IsNullOrEmpty(cliente.correo) ? clienteToUpdate.correo : cliente.correo;
-                    clienteToUpdate.fechaActualizacion = DateTime.Now;
-                    await db.SaveChangesAsync();
-                    response.result = true;
-                }
-                else
-                {
-                    response.result = false;
-                    response.message = "no se encontro el cliente [ClienteService => ActualizarCliente]";
-                    response.existError = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                response = new Response<bool>(ex);
-                response.message = "error no controlado [ClienteService => ActualizarCliente]";
-            }
-            #endregion
-
             return response;
         }
 
-        public async Task<Response<bool>> CrearCliente(Cliente cliente)
+        public async Task<Response<bool>> CrearCliente(ClienteCreateDto cliente)
         {
             Response<bool> response = new();
 
-            #region validarCorreo
             try
             {
-                if (cliente.correo != null)
+                var direccionCorreo = new MailAddress((string.IsNullOrEmpty(cliente.correo) ? "" : cliente.correo));
+                #region CrearCliente
+                try
                 {
-                    var direccionCorreo = new MailAddress(cliente.correo);
+                    Cliente clienteToCreate =
+                        new Cliente(
+                            (string.IsNullOrEmpty(cliente.nombres) ? "no registra nombre" : cliente.nombres),
+                            (string.IsNullOrEmpty(cliente.cedula) ? "no registra cedula" : cliente.cedula),
+                            (string.IsNullOrEmpty(cliente.celular) ? "no registra celular" : cliente.celular),
+                            direccionCorreo.Address);
+
+                    await db.cliente.AddAsync(clienteToCreate);
+                    await db.SaveChangesAsync();
+                    response.result = true;
                 }
+                catch (Exception ex)
+                {
+                    response = new Response<bool>(ex);
+                    response.message = "error no controlado [ClienteService => CrearCliente]";
+                }
+                #endregion
             }
-            catch (FormatException ex)
+            catch (Exception ex)
             {
                 response = new Response<bool>(ex);
                 response.message = "el correo no tiene el formato correcto [ClienteService => CrearCliente]";
             }
-            #endregion
-
-            #region CrearCliente
-            try
-            {
-                Cliente clienteToUpdate = cliente;
-                await db.AddAsync(clienteToUpdate);
-                await db.SaveChangesAsync();
-                response.result = true;
-            }
-            catch (Exception ex)
-            {
-                response = new Response<bool>(ex);
-                response.message = "error no controlado [ClienteService => CrearCliente]";
-            }
-            #endregion
-
             return response;
         }
 
