@@ -1,4 +1,4 @@
-﻿using FacturacionHogar.Services;
+﻿using FacturacionHogar.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 namespace FacturacionHogar.Controllers
 {

@@ -1,4 +1,5 @@
-﻿using SelectPdf;
+﻿using FacturacionHogar.Interfaces;
+using SelectPdf;
 
 
 namespace FacturacionHogar.Services

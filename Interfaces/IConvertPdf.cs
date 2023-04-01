@@ -1,4 +1,4 @@
-﻿namespace FacturacionHogar.Services
+﻿namespace FacturacionHogar.Interfaces
 {
     public interface IConvertPdf
     {
