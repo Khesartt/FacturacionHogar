@@ -28,7 +28,7 @@ namespace FacturacionHogar.Services
                 #region actualizarCliente
                 try
                 {
-                    Cliente clienteToUpdate = await db.cliente.Where(x => x.id == cliente.id).FirstOrDefaultAsync();
+                    Cliente clienteToUpdate = await db.cliente.FindAsync(cliente.id);
 
                     if (clienteToUpdate != null)
                     {
@@ -99,19 +99,69 @@ namespace FacturacionHogar.Services
             return response;
         }
 
-        public Task<Response<bool>> EliminarCliente(long id)
+        public async Task<Response<bool>> EliminarCliente(long id)
         {
-            throw new NotImplementedException();
+            Response<bool> response = new();
+            try
+            {
+                Cliente clienteToDelete = await db.cliente.FindAsync(id);
+                if (clienteToDelete != null)
+                {
+                    db.Remove(clienteToDelete);
+                    await db.SaveChangesAsync();
+                    response.result = true;
+                }
+                else
+                {
+                    response.message = "no se encontro ningun cliente con ese id [ClienteService => EliminarCliente]";
+                    response.result = false;
+                    response.existError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado [ClienteService => EliminarCliente]";
+            }
+            return response;
         }
 
-        public Task<Response<Cliente>> ObtenerClientePorId(long id)
+        public async Task<Response<Cliente>> ObtenerClientePorId(long id)
         {
-            throw new NotImplementedException();
+            Response<Cliente> response = new();
+
+            try
+            {
+                Cliente cliente = await db.cliente.FindAsync(id);
+                if (cliente != null) response.result = cliente;
+                else
+                {
+                    response.message = "no se encontro ningun cliente con ese id [ClienteService => ObtenerClientePorId]";
+                    response.result = null;
+                    response.existError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado [ClienteService => ObtenerClientePorId]";
+            }
+            return response;
         }
 
-        public Task<Response<Cliente>> ObtenerTodosLosClientes()
+        public async Task<Response<Cliente>> ObtenerTodosLosClientes()
         {
-            throw new NotImplementedException();
+            Response<Cliente> response = new();
+            try
+            {
+                response.results = await db.cliente.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado [ClienteService => ObtenerTodosLosClientes]";
+            }
+            return response;
         }
     }
 }
