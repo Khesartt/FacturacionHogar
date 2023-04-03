@@ -67,7 +67,7 @@ namespace FacturacionHogar.Controllers
         }
 
         /// <summary>
-        /// Buscar los Cliente.
+        /// Buscar los Clientes.
         /// </summary>
         /// <returns>dentro del objeto que se retorna en la variable results, devuelve la informacion de los clientes y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerTodosLosClientes")]
