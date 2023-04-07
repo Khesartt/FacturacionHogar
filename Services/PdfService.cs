@@ -1,19 +1,20 @@
 ﻿using FacturacionHogar.Interfaces;
 using FacturacionHogar.models;
+using FacturacionHogar.models.DTO_s;
 using SelectPdf;
 
 
 namespace FacturacionHogar.Services
 {
-    public class ConvertPDF : IConvertPdf
+    public class PdfService : IPdfService
     {
         private readonly IWebHostEnvironment env;
         private readonly string ruta;
-        private readonly string path;
+        private readonly string pathReciboArriendo;
 
 
         private string html;
-        public ConvertPDF(IWebHostEnvironment _env)
+        public PdfService(IWebHostEnvironment _env)
         {
             env = _env;
             #region htmlPlantilla
@@ -200,12 +201,18 @@ namespace FacturacionHogar.Services
         }
         /*seccion de firmas*/
         /*los inputs a diseñar*/
-        .spanTags {
+        .spanTags,.spanTagsDate {
             position: relative;
-            margin-right: 5px;
+            margin-right: 10px;
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             font-size: x-large;
             text-align: center;
+        }
+        .spanTagsDate{
+            position:absolute;
+            top:10px;
+            left:50px;
+            text-align: right;
         }
     </style>
    <body>
@@ -220,17 +227,17 @@ namespace FacturacionHogar.Services
                     <div class=""row rowInfo valueType"">
                         <div class=""col value"">
                             <label for=""titleText"" class=""tag"">$</label>
-                            <span id=""ValorRecibo"" class=""spanTags""></span>
+                            <span id=""ValorRecibo"" class=""spanTags"">@valorReciboVar</span>
                         </div>
                         <div class=""col number"">
                             <label for=""titleText"" class=""tag"">No.</label>
-                            <span id=""NumeroRecibo"" class=""spanTags""></span>
+                            <span id=""NumeroRecibo"" class=""spanTags"">@NumeroReciboVar</span>
                         </div>
                     </div>
                     <div class=""row rowInfo dateType"">
                         <div class=""col dateInfo"">
                             <label for=""titleText"" class=""tag"">Fecha:</label>
-                            <span id=""FechaRecibo"" class=""spanTags""></span>
+                            <span id=""FechaRecibo"" class=""spanTags"">@FechaReciboVar</span>
                         </div>
                     </div>
                 </div>
@@ -240,19 +247,19 @@ namespace FacturacionHogar.Services
             <div class=""row dataClient"">
                 <div class=""col-12 dataClientCol nameClient"">
                     <label for=""nameClient"" class=""tagClient"">Recibí de:</label>
-                    <span id=""arrendatario"" class=""spanTags""></span>
+                    <span id=""arrendatario"" class=""spanTags"">@arrendatarioVar</span>
                 </div>
                 <div class=""col-12 dataClientCol valueClient"">
                     <label for=""valueClient"" class=""tagClient"">La suma de:</label>
-                    <span id=""ValorTextoRecibo"" class=""spanTags""></span>
+                    <span id=""ValorTextoRecibo"" class=""spanTags"">@ValorTextoReciboVar</span>
                 </div>
                 <div class=""col-12 dataClientCol siteClient"">
                     <label for=""siteClient"" class=""tagClient"">Por concepto de arrendamiento de:</label>
-                    <span id=""sitioRecibo"" class=""spanTags""></span>
+                    <span id=""sitioRecibo"" class=""spanTags"">@sitioReciboVar</span>
                 </div>
                 <div class=""col-12 dataClientCol addressClient"">
                     <label for=""addressClient"" class=""tagClient"">Situado en:</label>
-                    <span id=""DireccionRecibo"" class=""spanTags""></span>
+                    <span id=""DireccionRecibo"" class=""spanTags"">@DireccionReciboVar</span>
                 </div>
             </div>
         </div>
@@ -263,31 +270,31 @@ namespace FacturacionHogar.Services
                 </div>
                 <div class=""col dateRange"">
                     <label for=""fromDate"" class=""tagDates special"">Día</label>
-                    <span id=""diaDRecibo"" class=""spanTags""></span>
+                    <span id=""diaDRecibo"" class=""spanTagsDate"">@diaDReciboVar</span>
                 </div>
                 <div class=""col dateRange"">
                     <label for=""fromDate"" class=""tagDates special"">Mes</label>
-                    <span id=""mesDRecibo"" class=""spanTags""></span>
+                    <span id=""mesDRecibo"" class=""spanTagsDate"">@mesDReciboVar</span>
 
                 </div>
                 <div class=""col dateRange"">
                     <label for=""fromDate"" class=""tagDates special"">Año</label>
-                    <span id=""anioDRecibo"" class=""spanTags""></span>
+                    <span id=""anioDRecibo"" class=""spanTagsDate"">@anioDReciboVar</span>
                 </div>
                 <div class=""fromDate dateRange"">
                     <label for=""fromDate"" class=""tagDates"">Al</label>
                 </div>
                 <div class=""col dateRange"">
                     <label for=""fromDate"" class=""tagDates special"">Día</label>
-                    <span id=""diaARecibo"" class=""spanTags""></span>
+                    <span id=""diaARecibo"" class=""spanTagsDate"">@diaAReciboVar</span>
                 </div>
                 <div class=""col dateRange"">
                     <label for=""fromDate"" class=""tagDates special"">Mes</label>
-                    <span id=""mesARecibo"" class=""spanTags""></span>
+                    <span id=""mesARecibo"" class=""spanTagsDate"">@mesAReciboVar</span>
                 </div>
                 <div class=""col"">
                     <label for=""fromDate"" class=""tagDates special"">Año</label>
-                    <span id=""anioARecibo"" class=""spanTags""></span>
+                    <span id=""anioARecibo"" class=""spanTagsDate"">@anioAReciboVar</span>
                 </div>
             </div>
         </div>
@@ -310,9 +317,8 @@ namespace FacturacionHogar.Services
             #endregion
             ruta = env.ContentRootPath + "\\htmlHelper\\";
             html = html.Replace("@ruta", ruta);
-            path = @"C:\Recibos\reciboArrendamientoEnBlanco.pdf";
+            pathReciboArriendo = @"C:\Recibos\reciboArrendamiento.pdf";
         }
-
 
         public async Task<Response<string>> GetHtmlExample()
         {
@@ -329,8 +335,53 @@ namespace FacturacionHogar.Services
             }
             return await Task.FromResult(response);
         }
+        public Task<Response<string>> GeneratePdfArriendo(PdfArriendoDto pdfData)
+        {
+            Response<string> response = new();
+            string diaD = pdfData.fechaInicial.Day.ToString("D2");
+            string mesD = pdfData.fechaInicial.Month.ToString("D2");
+            string anioD = pdfData.fechaInicial.Year.ToString("D4");
+            string diaA = pdfData.fechaFinal.Day.ToString("D2");
+            string mesA = pdfData.fechaFinal.Month.ToString("D2");
+            string anioA = pdfData.fechaFinal.Year.ToString("D4");
+            string valorArrendamientoFormat = int.Parse(pdfData.valorArrendamiento).ToString("C");
+            html = html.Replace("@valorReciboVar", valorArrendamientoFormat.Replace("$", ""));
+            html = html.Replace("@NumeroReciboVar", pdfData.numeroRecibo);
+            html = html.Replace("@FechaReciboVar", pdfData.fechaRecibo.ToString("dd-MM-yyyy"));
+            html = html.Replace("@arrendatarioVar", pdfData.nombreCliente);
+            html = html.Replace("@ValorTextoReciboVar", pdfData.valorArrendamientoLetra);
+            html = html.Replace("@sitioReciboVar", pdfData.descripcionArrendamiento);
+            html = html.Replace("@DireccionReciboVar", pdfData.direccionArrendamiento);
+            html = html.Replace("@diaDReciboVar", diaD);
+            html = html.Replace("@mesDReciboVar", mesD);
+            html = html.Replace("@anioDReciboVar", anioD);
+            html = html.Replace("@diaAReciboVar", diaA);
+            html = html.Replace("@mesAReciboVar", mesA);
+            html = html.Replace("@anioAReciboVar", anioA);
+            try
+            {
+                if (GeneratePdfReciboArriendo())
+                {
+                    byte[] fileBytes = File.ReadAllBytes(pathReciboArriendo);
+                    string base64String = Convert.ToBase64String(fileBytes);
+                    response.result = base64String;
+                }
+                else
+                {
+                    response.result = null;
+                    response.existError = true;
+                    response.message = "no se pudo generar el pdf para el recibo de arriendo.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado en [PdfService => GeneratePdf]";
+            }
+            return Task.FromResult(response);
+        }
 
-        private bool generatePdf()
+        private bool GeneratePdfReciboArriendo()
         {
             try
             {
@@ -343,7 +394,7 @@ namespace FacturacionHogar.Services
                 convert.Options.MarginBottom = -300;
                 convert.Options.MinPageLoadTime = 3;
                 PdfDocument doc = convert.ConvertHtmlString(html);
-                doc.Save(path);
+                doc.Save(pathReciboArriendo);
                 doc.Close();
             }
             catch (Exception)
