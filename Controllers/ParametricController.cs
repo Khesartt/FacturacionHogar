@@ -66,6 +66,17 @@ namespace FacturacionHogar.Controllers
             var servicio = crearServicio();
             return servicio.ObtenerParametricPorId(id).Result;
         }
+        /// <summary>
+        /// Buscar una Parametria.
+        /// </summary>
+        /// <param name="key">se requiere la palabra que identifica la paremtria para obtener la parametria de la base de datos</param>
+        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion de la parametria y en la variable error, si hubieron errores</returns>
+        [HttpGet("ObtenerParametricPorKey")]
+        public Response<string> ObtenerParametricPorKey(string key)
+        {
+            var servicio = crearServicio();
+            return servicio.ObtenerParametricPorKey(key).Result;
+        }
 
         /// <summary>
         /// Buscar las Parametrias.

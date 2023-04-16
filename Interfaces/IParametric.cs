@@ -10,6 +10,7 @@ namespace FacturacionHogar.Interfaces
         Task<Response<bool>> ActualizarParametric(ParametricUpdateDto parametric);
         Task<Response<bool>> EliminarParametric(long id);
         Task<Response<Parametric>> ObtenerParametricPorId(long id);
+        Task<Response<string>> ObtenerParametricPorKey(string key);
         Task<Response<Parametric>> ObtenerTodos();
     }
 }

@@ -129,7 +129,7 @@ namespace FacturacionHogar.Services
                 if (reciboArrendamiento != null) response.result = reciboArrendamiento;
                 else
                 {
-                    response.message = "no se encontro ningun cliente con ese id [ReciboArrendamientoService => ObtenerReciboPorId]";
+                    response.message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorId]";
                     response.result = null;
                     response.existError = true;
                 }
@@ -138,6 +138,29 @@ namespace FacturacionHogar.Services
             {
                 response = new(ex);
                 response.message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorId]";
+            }
+            return response;
+        }
+
+        public async Task<Response<ReciboArrendamiento>> ObtenerReciboPorIdCliente(long idcliente)
+        {
+            Response<ReciboArrendamiento> response = new();
+
+            try
+            {
+                ReciboArrendamiento recibosArrendamiento = await db.reciboArrendamiento.Where(x => x.idCliente == idcliente).FirstOrDefaultAsync();
+                if (recibosArrendamiento != null) response.result = recibosArrendamiento;
+                else
+                {
+                    response.message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
+                    response.result = null;
+                    response.existError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
             }
             return response;
         }

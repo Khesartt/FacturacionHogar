@@ -7,6 +7,7 @@ namespace FacturacionHogar.Interfaces
     public interface IReciboArrendamiento
     {
         Task<Response<ReciboArrendamiento>> ObtenerReciboPorId(long id);
+        Task<Response<ReciboArrendamiento>> ObtenerReciboPorIdCliente(long idcliente);
         Task<Response<ReciboArrendamiento>> ObtenerTodosLosRecibos();
         Task<Response<bool>> CrearRecibo(ReciboArrendamientoCreateDto recibo);
         Task<Response<bool>> ActualizarRecibo(ReciboArrendamientoUpdateDto recibo);

@@ -32,14 +32,23 @@ builder.Services.AddSwaggerGen((c =>
     });
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 }));
-var app = builder.Build();
-if (app.Environment.IsDevelopment())
+
+builder.Services.AddCors(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Facturacion"));
+    options.AddPolicy(name: "AllowOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 
-}
+var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Facturacion"));
+app.UseCors("AllowOrigin");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

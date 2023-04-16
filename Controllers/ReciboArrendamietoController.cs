@@ -58,13 +58,27 @@ namespace FacturacionHogar.Controllers
         /// Buscar un recibo de arriendo.
         /// </summary>
         /// <param name="id">se requiere el identificador para obtener el recibo de arriendo de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion del cliente y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion del recibo y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerReciboPorId")]
         public Response<ReciboArrendamiento> ObtenerReciboPorId(long id)
         {
             var servicio = crearServicio();
             return servicio.ObtenerReciboPorId(id).Result;
         }
+
+
+        /// <summary>
+        /// Buscar un recibo de arriendo.
+        /// </summary>
+        /// <param name="id">se requiere el identificador para obtener los recibos de arriendo de la base de datos</param>
+        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion de los recibos y en la variable error, si hubieron errores</returns>
+        [HttpGet("ObtenerReciboPorIdCliente")]
+        public Response<ReciboArrendamiento> ObtenerReciboPorIdCliente(long id)
+        {
+            var servicio = crearServicio();
+            return servicio.ObtenerReciboPorIdCliente(id).Result;
+        }
+
 
         /// <summary>
         /// Buscar los recibo de arriendo.

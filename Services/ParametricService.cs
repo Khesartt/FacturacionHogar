@@ -121,6 +121,26 @@ namespace FacturacionHogar.Services
             return response;
         }
 
+        public Task<Response<string>> ObtenerParametricPorKey(string key)
+        {
+            Response<string> response = new();
+
+            try
+            {
+                string parametric = db.parametric.Where(x => x.tipo.Equals(key)).Select(x => x.valor).FirstOrDefault();
+                if (parametric != null)
+                {
+                    response.result = parametric;
+                }
+            }
+            catch (Exception ex)
+            {
+                response = new(ex);
+                response.message = "error no controlado [ParametricService => ObtenerParametricPorKey]";
+            }
+            return Task.FromResult(response);
+        }
+
         public async Task<Response<Parametric>> ObtenerTodos()
         {
             Response<Parametric> response = new();
