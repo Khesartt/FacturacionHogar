@@ -38,12 +38,12 @@ namespace FacturacionHogar.Services
 
                     db.Update(reciboArrendamientoToUpdate);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.message = "no se encontro dicho recibo [ReciboArrendamientoService => ActualizarRecibo]";
-                    response.result = false;
+                    response.Message = "no se encontro dicho recibo [ReciboArrendamientoService => ActualizarRecibo]";
+                    response.Result = false;
                     response.existError = true;
                 }
 
@@ -51,7 +51,7 @@ namespace FacturacionHogar.Services
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => ActualizarRecibo]";
+                response.Message = "error no controlado [ReciboArrendamientoService => ActualizarRecibo]";
             }
 
             return response;
@@ -80,12 +80,12 @@ namespace FacturacionHogar.Services
                 await db.AddAsync(reciboArrendamiento);
                 await db.SaveChangesAsync();
 
-                response.result = true;
+                response.Result = true;
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => CrearRecibo]";
+                response.Message = "error no controlado [ReciboArrendamientoService => CrearRecibo]";
             }
             return response;
         }
@@ -101,12 +101,12 @@ namespace FacturacionHogar.Services
                 {
                     db.Remove(reciboArrendamiento);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.message = "no se encontro dicho recibo [ReciboArrendamientoService => EliminarRecibo]";
-                    response.result = false;
+                    response.Message = "no se encontro dicho recibo [ReciboArrendamientoService => EliminarRecibo]";
+                    response.Result = false;
                     response.existError = true;
 
                 }
@@ -114,7 +114,7 @@ namespace FacturacionHogar.Services
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => EliminarRecibo]";
+                response.Message = "error no controlado [ReciboArrendamientoService => EliminarRecibo]";
             }
             return response;
         }
@@ -126,18 +126,18 @@ namespace FacturacionHogar.Services
             try
             {
                 ReciboArrendamiento reciboArrendamiento = await db.reciboArrendamiento.FindAsync(id);
-                if (reciboArrendamiento != null) response.result = reciboArrendamiento;
+                if (reciboArrendamiento != null) response.Result = reciboArrendamiento;
                 else
                 {
-                    response.message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorId]";
-                    response.result = null;
+                    response.Message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorId]";
+                    response.Result = null;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorId]";
+                response.Message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorId]";
             }
             return response;
         }
@@ -149,18 +149,18 @@ namespace FacturacionHogar.Services
             try
             {
                 ReciboArrendamiento recibosArrendamiento = await db.reciboArrendamiento.Where(x => x.idCliente == idcliente).FirstOrDefaultAsync();
-                if (recibosArrendamiento != null) response.result = recibosArrendamiento;
+                if (recibosArrendamiento != null) response.Result = recibosArrendamiento;
                 else
                 {
-                    response.message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
-                    response.result = null;
+                    response.Message = "no se encontro ningun recibo con ese id [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
+                    response.Result = null;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
+                response.Message = "error no controlado [ReciboArrendamientoService => ObtenerReciboPorIdCliente]";
             }
             return response;
         }
@@ -170,12 +170,12 @@ namespace FacturacionHogar.Services
             Response<ReciboArrendamiento> response = new();
             try
             {
-                response.results = await db.reciboArrendamiento.ToListAsync();
+                response.Results = await db.reciboArrendamiento.ToListAsync();
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ReciboArrendamientoService => ObtenerTodosLosRecibos]";
+                response.Message = "error no controlado [ReciboArrendamientoService => ObtenerTodosLosRecibos]";
             }
             return response;
         }

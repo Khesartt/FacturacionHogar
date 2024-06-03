@@ -1,5 +1,5 @@
-﻿using FacturacionHogar.Dominio.modelos;
-using FacturacionHogar.models;
+﻿using FacturacionHogar.models;
+using FacturacionHogar.models.domain;
 using FacturacionHogar.models.DTO_s;
 
 namespace FacturacionHogar.Interfaces
@@ -9,8 +9,8 @@ namespace FacturacionHogar.Interfaces
         Task<Response<bool>> CrearParametric(ParametricCreateDto parametric);
         Task<Response<bool>> ActualizarParametric(ParametricUpdateDto parametric);
         Task<Response<bool>> EliminarParametric(long id);
-        Task<Response<Parametric>> ObtenerParametricPorId(long id);
+        Task<Response<Service>> ObtenerParametricPorId(long id);
         Task<Response<string>> ObtenerParametricPorKey(string key);
-        Task<Response<Parametric>> ObtenerTodos();
+        Task<Response<Service>> ObtenerTodos();
     }
 }

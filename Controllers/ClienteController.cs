@@ -1,6 +1,6 @@
 ﻿using FacturacionHogar.Context;
-using FacturacionHogar.Dominio.modelos;
 using FacturacionHogar.models;
+using FacturacionHogar.models.domain;
 using FacturacionHogar.models.DTO_s;
 using FacturacionHogar.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace FacturacionHogar.Controllers
         /// Crear Usuario.
         /// </summary>
         /// <param name="cliente">Los detalles del nuevo usuario que se deben proporcionar en el cuerpo de la petición los encuentras en el ejemplo:</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la creacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la creacion y en la variable error, si hubieron errores</returns>
         [HttpPost("CrearCliente")]
         public Response<bool> CrearCliente([FromBody] ClienteCreateDto cliente)
         {
@@ -34,7 +34,7 @@ namespace FacturacionHogar.Controllers
         /// actualizar Usuario.
         /// </summary>
         /// <param name="cliente">Los detalles de los campos para actualizar el usuario que se deben proporcionar en el cuerpo de la petición los encuentras en el ejemplo:</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la actualizacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la actualizacion y en la variable error, si hubieron errores</returns>
         [HttpPost("ActualizarCliente")]
         public Response<bool> ActualizarCliente([FromBody] ClienteUpdateDto cliente)
         {
@@ -46,7 +46,7 @@ namespace FacturacionHogar.Controllers
         /// Eliminar Usuario.
         /// </summary>
         /// <param name="id">se requiere el identificador para eliminar el cliente de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la eliminacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la eliminacion y en la variable error, si hubieron errores</returns>
         [HttpDelete("EliminarCliente")]
         public Response<bool> EliminarCliente(long id)
         {
@@ -58,9 +58,9 @@ namespace FacturacionHogar.Controllers
         /// Buscar un Cliente.
         /// </summary>
         /// <param name="id">se requiere el identificador para obtener el cliente de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion del cliente y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve la informacion del cliente y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerClientePorId")]
-        public Response<Cliente> ObtenerClientePorId(long id)
+        public Response<Client> ObtenerClientePorId(long id)
         {
             var servicio = crearServicio();
             return servicio.ObtenerClientePorId(id).Result;
@@ -69,9 +69,9 @@ namespace FacturacionHogar.Controllers
         /// <summary>
         /// Buscar los Clientes.
         /// </summary>
-        /// <returns>dentro del objeto que se retorna en la variable results, devuelve la informacion de los clientes y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Results, devuelve la informacion de los clientes y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerTodosLosClientes")]
-        public Response<Cliente> ObtenerTodosLosClientes()
+        public Response<Client> ObtenerTodosLosClientes()
         {
             var servicio = crearServicio();
             return servicio.ObtenerTodosLosClientes().Result;

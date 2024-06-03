@@ -2,26 +2,31 @@
 {
     public class Response<T>
     {
+        public const string stillAlive = "I'm Still Alive...";
+        public const string defaultError = "No Exception Error";
+
+        public string Message { get; set; }
+        public string Error { get; set; }
+        public bool ExistError { get; set; }
+        public List<T>? Results { get; set; }
+        public T? Result { get; set; }
+
         public Response()
         {
-            error = "no Exception Error";
-            message = "I'm Still Alive...";//portal refrences :)
-            existError = false;
-            results = null;
-            result = default(T);
+            Error = defaultError;
+            Message = stillAlive;
+            ExistError = false;
+            Results = null;
+            Result = default;
         }
+
         public Response(Exception ex)
         {
-            error = ex.Message;
-            existError = true;
-            results = null;
-            result = default(T);
-            message = "";
+            Error = ex.Message;
+            ExistError = true;
+            Results = null;
+            Result = default;
+            Message = string.Empty;
         }
-        public string message { get; set; }
-        public string error { get; set; }
-        public bool existError { get; set; }
-        public List<T>? results { get; set; }
-        public T? result { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FacturacionHogar.Context;
-using FacturacionHogar.Dominio.modelos;
 using FacturacionHogar.Interfaces;
 using FacturacionHogar.models;
+using FacturacionHogar.models.domain;
 using FacturacionHogar.models.DTO_s;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ namespace FacturacionHogar.Services
         {
             Response<bool> response = new();
 
-            Parametric parametricToUpdate = await db.parametric.FindAsync(parametric.id);
+            Service parametricToUpdate = await db.parametric.FindAsync(parametric.id);
             try
             {
                 if (parametricToUpdate != null)
@@ -32,12 +32,12 @@ namespace FacturacionHogar.Services
 
                     db.Update(parametricToUpdate);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.result = false;
-                    response.message = "no se encontro la variable [ParametricService => ActualizarParametric]";
+                    response.Result = false;
+                    response.Message = "no se encontro la variable [ParametricService => ActualizarParametric]";
                     response.existError = true;
                 }
 
@@ -45,7 +45,7 @@ namespace FacturacionHogar.Services
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => ActualizarParametric]";
+                response.Message = "error no controlado [ParametricService => ActualizarParametric]";
             }
             return response;
         }
@@ -55,18 +55,18 @@ namespace FacturacionHogar.Services
             Response<bool> response = new();
             try
             {
-                Parametric parametricToCreate =
-                    new Parametric((string.IsNullOrEmpty(parametric.tipo) ? "no registra tipo" : parametric.tipo),
+                Service parametricToCreate =
+                    new Service((string.IsNullOrEmpty(parametric.tipo) ? "no registra tipo" : parametric.tipo),
                                    (string.IsNullOrEmpty(parametric.valor) ? "no registra valor" : parametric.valor));
 
                 await db.parametric.AddAsync(parametricToCreate);
                 await db.SaveChangesAsync();
-                response.result = true;
+                response.Result = true;
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => CrearParametric]";
+                response.Message = "error no controlado [ParametricService => CrearParametric]";
             }
             return response;
         }
@@ -76,47 +76,47 @@ namespace FacturacionHogar.Services
             Response<bool> response = new();
             try
             {
-                Parametric parametricToDelete = await db.parametric.FindAsync(id);
+                Service parametricToDelete = await db.parametric.FindAsync(id);
                 if (parametricToDelete != null)
                 {
                     db.Remove(parametricToDelete);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.message = "no se encontro ninguna variable con ese id [ParametricService => EliminarParametric]";
-                    response.result = false;
+                    response.Message = "no se encontro ninguna variable con ese id [ParametricService => EliminarParametric]";
+                    response.Result = false;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => EliminarParametric]";
+                response.Message = "error no controlado [ParametricService => EliminarParametric]";
             }
             return response;
         }
 
-        public async Task<Response<Parametric>> ObtenerParametricPorId(long id)
+        public async Task<Response<Service>> ObtenerParametricPorId(long id)
         {
-            Response<Parametric> response = new();
+            Response<Service> response = new();
 
             try
             {
-                Parametric parametric = await db.parametric.FindAsync(id);
-                if (parametric != null) response.result = parametric;
+                Service parametric = await db.parametric.FindAsync(id);
+                if (parametric != null) response.Result = parametric;
                 else
                 {
-                    response.message = "no se encontro ninguna varaiable con ese id [ParametricService => ObtenerParametricPorId]";
-                    response.result = null;
+                    response.Message = "no se encontro ninguna varaiable con ese id [ParametricService => ObtenerParametricPorId]";
+                    response.Result = null;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => ObtenerParametricPorId]";
+                response.Message = "error no controlado [ParametricService => ObtenerParametricPorId]";
             }
             return response;
         }
@@ -130,28 +130,28 @@ namespace FacturacionHogar.Services
                 string parametric = db.parametric.Where(x => x.tipo.Equals(key)).Select(x => x.valor).FirstOrDefault();
                 if (parametric != null)
                 {
-                    response.result = parametric;
+                    response.Result = parametric;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => ObtenerParametricPorKey]";
+                response.Message = "error no controlado [ParametricService => ObtenerParametricPorKey]";
             }
             return Task.FromResult(response);
         }
 
-        public async Task<Response<Parametric>> ObtenerTodos()
+        public async Task<Response<Service>> ObtenerTodos()
         {
-            Response<Parametric> response = new();
+            Response<Service> response = new();
             try
             {
-                response.results = await db.parametric.ToListAsync();
+                response.Results = await db.parametric.ToListAsync();
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ParametricService => ObtenerTodos]";
+                response.Message = "error no controlado [ParametricService => ObtenerTodos]";
             }
             return response;
         }

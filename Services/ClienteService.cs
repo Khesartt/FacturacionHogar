@@ -1,7 +1,7 @@
 ﻿using FacturacionHogar.Context;
-using FacturacionHogar.Dominio.modelos;
 using FacturacionHogar.Interfaces;
 using FacturacionHogar.models;
+using FacturacionHogar.models.domain;
 using FacturacionHogar.models.DTO_s;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
@@ -28,7 +28,7 @@ namespace FacturacionHogar.Services
                 #region actualizarCliente
                 try
                 {
-                    Cliente clienteToUpdate = await db.cliente.FindAsync(cliente.id);
+                    Client clienteToUpdate = await db.cliente.FindAsync(cliente.id);
 
                     if (clienteToUpdate != null)
                     {
@@ -39,26 +39,26 @@ namespace FacturacionHogar.Services
                         clienteToUpdate.correo = string.IsNullOrEmpty(cliente.correo) ? clienteToUpdate.correo : cliente.correo;
                         clienteToUpdate.fechaActualizacion = DateTime.Now;
                         await db.SaveChangesAsync();
-                        response.result = true;
+                        response.Result = true;
                     }
                     else
                     {
-                        response.result = false;
-                        response.message = "no se encontro el cliente [ClienteService => ActualizarCliente]";
+                        response.Result = false;
+                        response.Message = "no se encontro el cliente [ClienteService => ActualizarCliente]";
                         response.existError = true;
                     }
                 }
                 catch (Exception ex)
                 {
                     response = new Response<bool>(ex);
-                    response.message = "error no controlado [ClienteService => ActualizarCliente]";
+                    response.Message = "error no controlado [ClienteService => ActualizarCliente]";
                 }
                 #endregion
             }
             catch (Exception ex)
             {
                 response = new Response<bool>(ex);
-                response.message = "el correo no tiene el formato correcto [ClienteService => ActualizarCliente]";
+                response.Message = "el correo no tiene el formato correcto [ClienteService => ActualizarCliente]";
             }
             return response;
         }
@@ -73,8 +73,8 @@ namespace FacturacionHogar.Services
                 #region CrearCliente
                 try
                 {
-                    Cliente clienteToCreate =
-                        new Cliente(
+                    Client clienteToCreate =
+                        new Client(
                             (string.IsNullOrEmpty(cliente.nombres) ? "no registra nombre" : cliente.nombres),
                             (string.IsNullOrEmpty(cliente.cedula) ? "no registra cedula" : cliente.cedula),
                             (string.IsNullOrEmpty(cliente.celular) ? "no registra celular" : cliente.celular),
@@ -82,19 +82,19 @@ namespace FacturacionHogar.Services
 
                     await db.cliente.AddAsync(clienteToCreate);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 catch (Exception ex)
                 {
                     response = new Response<bool>(ex);
-                    response.message = "error no controlado [ClienteService => CrearCliente]";
+                    response.Message = "error no controlado [ClienteService => CrearCliente]";
                 }
                 #endregion
             }
             catch (Exception ex)
             {
                 response = new Response<bool>(ex);
-                response.message = "el correo no tiene el formato correcto [ClienteService => CrearCliente]";
+                response.Message = "el correo no tiene el formato correcto [ClienteService => CrearCliente]";
             }
             return response;
         }
@@ -104,62 +104,62 @@ namespace FacturacionHogar.Services
             Response<bool> response = new();
             try
             {
-                Cliente clienteToDelete = await db.cliente.FindAsync(id);
+                Client clienteToDelete = await db.cliente.FindAsync(id);
                 if (clienteToDelete != null)
                 {
                     db.Remove(clienteToDelete);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.message = "no se encontro ningun cliente con ese id [ClienteService => EliminarCliente]";
-                    response.result = false;
+                    response.Message = "no se encontro ningun cliente con ese id [ClienteService => EliminarCliente]";
+                    response.Result = false;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ClienteService => EliminarCliente]";
+                response.Message = "error no controlado [ClienteService => EliminarCliente]";
             }
             return response;
         }
 
-        public async Task<Response<Cliente>> ObtenerClientePorId(long id)
+        public async Task<Response<Client>> ObtenerClientePorId(long id)
         {
-            Response<Cliente> response = new();
+            Response<Client> response = new();
 
             try
             {
-                Cliente cliente = await db.cliente.FindAsync(id);
-                if (cliente != null) response.result = cliente;
+                Client cliente = await db.cliente.FindAsync(id);
+                if (cliente != null) response.Result = cliente;
                 else
                 {
-                    response.message = "no se encontro ningun cliente con ese id [ClienteService => ObtenerClientePorId]";
-                    response.result = null;
+                    response.Message = "no se encontro ningun cliente con ese id [ClienteService => ObtenerClientePorId]";
+                    response.Result = null;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ClienteService => ObtenerClientePorId]";
+                response.Message = "error no controlado [ClienteService => ObtenerClientePorId]";
             }
             return response;
         }
 
-        public async Task<Response<Cliente>> ObtenerTodosLosClientes()
+        public async Task<Response<Client>> ObtenerTodosLosClientes()
         {
-            Response<Cliente> response = new();
+            Response<Client> response = new();
             try
             {
-                response.results = await db.cliente.ToListAsync();
+                response.Results = await db.cliente.ToListAsync();
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ClienteService => ObtenerTodosLosClientes]";
+                response.Message = "error no controlado [ClienteService => ObtenerTodosLosClientes]";
             }
             return response;
         }

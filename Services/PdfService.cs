@@ -325,12 +325,12 @@ namespace FacturacionHogar.Services
             Response<string> response = new();
             try
             {
-                response.result = html;
+                response.Result = html;
             }
             catch (Exception ex)
             {
                 response = new Response<string>(ex);
-                response.message = "fallo en el metodo GetHtmlExample servicio ConvertPDF";
+                response.Message = "fallo en el metodo GetHtmlExample servicio ConvertPDF";
 
             }
             return await Task.FromResult(response);
@@ -364,19 +364,19 @@ namespace FacturacionHogar.Services
                 {
                     byte[] fileBytes = File.ReadAllBytes(pathReciboArriendo);
                     string base64String = Convert.ToBase64String(fileBytes);
-                    response.result = base64String;
+                    response.Result = base64String;
                 }
                 else
                 {
-                    response.result = null;
-                    response.existError = true;
-                    response.message = "no se pudo generar el pdf para el recibo de arriendo.";
+                    response.Result = null;
+                    response.ExistError = true;
+                    response.Message = "no se pudo generar el pdf para el recibo de arriendo.";
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado en [PdfService => GeneratePdf]";
+                response.Message = "error no controlado en [PdfService => GeneratePdf]";
             }
             return Task.FromResult(response);
         }

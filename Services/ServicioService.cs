@@ -1,7 +1,7 @@
 ﻿using FacturacionHogar.Context;
-using FacturacionHogar.Dominio.modelos;
 using FacturacionHogar.Interfaces;
 using FacturacionHogar.models;
+using FacturacionHogar.models.domain;
 using FacturacionHogar.models.DTO_s;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,8 +22,8 @@ namespace FacturacionHogar.Services
 
             try
             {
-                Cliente cliente = await db.cliente.FindAsync(servicio.idCliente);
-                Parametric parametric = await db.parametric.FindAsync(servicio.idParametric);
+                Client cliente = await db.cliente.FindAsync(servicio.idCliente);
+                Service parametric = await db.parametric.FindAsync(servicio.idParametric);
                 if (cliente == null) throw new Exception("el cliente no fue encontrado en base de datos");
                 else if (parametric == null) throw new Exception("el valor parametrico no fue encontrado en base de datos");
                 else
@@ -39,12 +39,12 @@ namespace FacturacionHogar.Services
                         servicioToUpdate.idParametric = servicioToUpdate.idParametric;
                         servicioToUpdate.fechaActualizacion = DateTime.Now;
                         await db.SaveChangesAsync();
-                        response.result = true;
+                        response.Result = true;
                     }
                     else
                     {
-                        response.result = false;
-                        response.message = "no se encontro el servicio [ServicioService => Actualizarservicio]";
+                        response.Result = false;
+                        response.Message = "no se encontro el servicio [ServicioService => Actualizarservicio]";
                         response.existError = true;
                     }
                 }
@@ -52,7 +52,7 @@ namespace FacturacionHogar.Services
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado en error no controlado [ServicioService => Actualizarservicio]";
+                response.Message = "error no controlado en error no controlado [ServicioService => Actualizarservicio]";
             }
             return response;
         }
@@ -62,8 +62,8 @@ namespace FacturacionHogar.Services
             Response<bool> response = new();
             try
             {
-                Cliente cliente = await db.cliente.FindAsync(servicio.idCliente);
-                Parametric parametric = await db.parametric.FindAsync(servicio.idParametric);
+                Client cliente = await db.cliente.FindAsync(servicio.idCliente);
+                Service parametric = await db.parametric.FindAsync(servicio.idParametric);
                 if (cliente == null) throw new Exception("el cliente no fue encontrado en base de datos");
                 else if (parametric == null) throw new Exception("el valor parametrico no fue encontrado en base de datos");
                 else
@@ -73,20 +73,20 @@ namespace FacturacionHogar.Services
                         Servicio servicioToCreate = new(servicio.medicionAnterior, servicio.medicionActual, servicio.idCliente, servicio.idParametric);
                         await db.AddAsync(servicioToCreate);
                         await db.SaveChangesAsync();
-                        response.result = true;
+                        response.Result = true;
                     }
                     else
                     {
-                        response.message = "los campos no puede ser vacios o nulos";
+                        response.Message = "los campos no puede ser vacios o nulos";
                         response.existError = true;
-                        response.result = false;
+                        response.Result = false;
                     }
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado en error no controlado [ServicioService => Crearservicio]";
+                response.Message = "error no controlado en error no controlado [ServicioService => Crearservicio]";
             }
             return response;
         }
@@ -101,19 +101,19 @@ namespace FacturacionHogar.Services
                 {
                     db.Remove(servicioToDelete);
                     await db.SaveChangesAsync();
-                    response.result = true;
+                    response.Result = true;
                 }
                 else
                 {
-                    response.message = "no se encontro ningun servicio con ese id [ServicioService => Eliminarservicio]";
-                    response.result = false;
+                    response.Message = "no se encontro ningun servicio con ese id [ServicioService => Eliminarservicio]";
+                    response.Result = false;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ServicioService => Eliminarservicio]";
+                response.Message = "error no controlado [ServicioService => Eliminarservicio]";
             }
             return response;
         }
@@ -125,18 +125,18 @@ namespace FacturacionHogar.Services
             try
             {
                 Servicio servicio = await db.servicio.FindAsync(id);
-                if (servicio != null) response.result = servicio;
+                if (servicio != null) response.Result = servicio;
                 else
                 {
-                    response.message = "no se encontro ningun servicio con ese id [ServicioService => ObtenerservicioPorId]";
-                    response.result = null;
+                    response.Message = "no se encontro ningun servicio con ese id [ServicioService => ObtenerservicioPorId]";
+                    response.Result = null;
                     response.existError = true;
                 }
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ServicioService => ObtenerClientePorId]";
+                response.Message = "error no controlado [ServicioService => ObtenerClientePorId]";
             }
             return response;
         }
@@ -146,12 +146,12 @@ namespace FacturacionHogar.Services
             Response<Servicio> response = new();
             try
             {
-                response.results = await db.servicio.ToListAsync();
+                response.Results = await db.servicio.ToListAsync();
             }
             catch (Exception ex)
             {
                 response = new(ex);
-                response.message = "error no controlado [ServicioService => ObtenerTodosLosservicios]";
+                response.Message = "error no controlado [ServicioService => ObtenerTodosLosservicios]";
             }
             return response;
         }

@@ -22,7 +22,7 @@ namespace FacturacionHogar.Controllers
         /// Crear recibo de arriendo.
         /// </summary>
         /// <param name="recibo">Los detalles del nuevo recibo de arriendo que se deben proporcionar en el cuerpo de la petición los encuentras en el ejemplo:</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la creacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la creacion y en la variable error, si hubieron errores</returns>
         [HttpPost("CrearRecibo")]
         public Response<bool> CrearRecibo([FromBody] ReciboArrendamientoCreateDto recibo)
         {
@@ -34,7 +34,7 @@ namespace FacturacionHogar.Controllers
         /// actualizar recibo de arriendo.
         /// </summary>
         /// <param name="cliente">Los detalles de los campos para actualizar el recibo de arriendo que se deben proporcionar en el cuerpo de la petición los encuentras en el ejemplo:</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la actualizacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la actualizacion y en la variable error, si hubieron errores</returns>
         [HttpPost("ActualizarRecibo")]
         public Response<bool> ActualizarRecibo([FromBody] ReciboArrendamientoUpdateDto recibo)
         {
@@ -46,7 +46,7 @@ namespace FacturacionHogar.Controllers
         /// Eliminar recibo de arriendo.
         /// </summary>
         /// <param name="id">se requiere el identificador para eliminar el recibo de arriendo de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve el estado de la eliminacion y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve el estado de la eliminacion y en la variable error, si hubieron errores</returns>
         [HttpDelete("EliminarRecibo")]
         public Response<bool> EliminarRecibo(long id)
         {
@@ -58,7 +58,7 @@ namespace FacturacionHogar.Controllers
         /// Buscar un recibo de arriendo.
         /// </summary>
         /// <param name="id">se requiere el identificador para obtener el recibo de arriendo de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion del recibo y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve la informacion del recibo y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerReciboPorId")]
         public Response<ReciboArrendamiento> ObtenerReciboPorId(long id)
         {
@@ -71,7 +71,7 @@ namespace FacturacionHogar.Controllers
         /// Buscar un recibo de arriendo.
         /// </summary>
         /// <param name="id">se requiere el identificador para obtener los recibos de arriendo de la base de datos</param>
-        /// <returns>dentro del objeto que se retorna en la variable result, devuelve la informacion de los recibos y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Result, devuelve la informacion de los recibos y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerReciboPorIdCliente")]
         public Response<ReciboArrendamiento> ObtenerReciboPorIdCliente(long id)
         {
@@ -83,7 +83,7 @@ namespace FacturacionHogar.Controllers
         /// <summary>
         /// Buscar los recibo de arriendo.
         /// </summary>
-        /// <returns>dentro del objeto que se retorna en la variable results, devuelve la informacion de los clientes y en la variable error, si hubieron errores</returns>
+        /// <returns>dentro del objeto que se retorna en la variable Results, devuelve la informacion de los clientes y en la variable error, si hubieron errores</returns>
         [HttpGet("ObtenerTodosLosRecibos")]
         public Response<ReciboArrendamiento> ObtenerTodosLosRecibos()
         {
