@@ -57,45 +57,50 @@ namespace FacturacionHogar.Context
                 e.HasKey(x => x.Id);
 
                 e.Property(x => x.ServiceType).HasColumnType("varchar(500)");
-                e.Property(x => x.Value).HasColumnType("varchar(500)");
+                e.Property(x => x.Value).HasColumnType("decimal");
                 e.Property(x => x.LastUpdate).HasColumnType("datetime");
             });
 
-            builder.Entity<ReciboArrendamiento>(e =>
+            builder.Entity<LeaseReceipt>(e =>
             {
-                e.HasKey(x => x.id);
+                e.HasKey(x => x.Id);
 
-                e.HasOne<Client>().WithMany().HasForeignKey(x => x.idCliente).HasConstraintName("FK_reciboCliente");
+                e.HasOne<Client>().WithMany().HasForeignKey(x => x.IdClient).HasConstraintName("FK_reciboCliente");
+                e.Property(x => x.IdClient).HasColumnType("bigint");
 
-                e.Property(x => x.valorArrendamiento).HasColumnType("varchar(500)");
-                e.Property(x => x.numeroRecibo).HasColumnType("varchar(500)");
-                e.Property(x => x.fechaRecibo).HasColumnType("datetime");
-                e.Property(x => x.nombreCliente).HasColumnType("varchar(500)");
-                e.Property(x => x.valorArrendamientoLetra).HasColumnType("varchar(500)");
-                e.Property(x => x.descripcionArrendamiento).HasColumnType("varchar(500)");
-                e.Property(x => x.direccionArrendamiento).HasColumnType("varchar(500)");
-                e.Property(x => x.fechaInicial).HasColumnType("datetime");
-                e.Property(x => x.fechaFinal).HasColumnType("datetime");
-                e.Property(x => x.idCliente).HasColumnType("bigint");
-                e.Property(x => x.fechaActualizacion).HasColumnType("datetime");
+                e.Property(x => x.LeaseAmount).HasColumnType("varchar(500)");
+                e.Property(x => x.ReceiptNumber).HasColumnType("varchar(500)");
+                e.Property(x => x.ReceiptDate).HasColumnType("datetime");
+                e.Property(x => x.LeaseAmountInWords).HasColumnType("varchar(500)");
+                e.Property(x => x.LeaseDescription).HasColumnType("varchar(500)");
+                e.Property(x => x.LeaseAddress).HasColumnType("varchar(500)");
+                e.Property(x => x.StartDate).HasColumnType("datetime");
+                e.Property(x => x.EndDate).HasColumnType("datetime");
+                e.Property(x => x.LastUpdated).HasColumnType("datetime");
             });
 
-            builder.Entity<Servicio>(e =>
+            builder.Entity<SampleOfService>(e =>
             {
-                e.HasKey(x => x.id);
+                e.HasKey(x => x.Id);
 
-                e.HasOne<Client>().WithMany().HasForeignKey(x => x.idCliente).HasConstraintName("FK_servicioCliente");
-                e.HasOne<Service>().WithMany().HasForeignKey(x => x.idParametric).HasConstraintName("FK_servicioParametric");
-                e.Property(x => x.medicionBackUp).HasColumnType("varchar(500)");
-                e.Property(x => x.medicionAnterior).HasColumnType("varchar(500)");
-                e.Property(x => x.medicionActual).HasColumnType("varchar(500)");
-                e.Property(x => x.idCliente).HasColumnType("bigint");
-                e.Property(x => x.idParametric).HasColumnType("bigint");
-                e.Property(x => x.fechaActualizacion).HasColumnType("datetime");
+                e.HasOne<Client>().WithMany().HasForeignKey(x => x.IdClient).HasConstraintName("FK_servicioCliente");
+                e.HasOne<Service>().WithMany().HasForeignKey(x => x.IdService).HasConstraintName("FK_servicioParametric");
+                e.Property(x => x.IdClient).HasColumnType("bigint");
+                e.Property(x => x.IdService).HasColumnType("bigint");
+
+                e.Property(x => x.CurrentSample).HasColumnType("decimal");
+                e.Property(x => x.LastSample).HasColumnType("decimal");
+                e.Property(x => x.CurrentDate).HasColumnType("datetime");
             });
 
+            builder.Entity<SamplesHistory>(e =>
+            {
+                e.HasKey(x => x.Id);
 
-
+                e.Property(x => x.ServiceType).HasColumnType("varchar(500)");
+                e.Property(x => x.SampleDate).HasColumnType("datetime");
+                e.Property(x => x.Sample).HasColumnType("decimal");
+            });
         }
     }
 }

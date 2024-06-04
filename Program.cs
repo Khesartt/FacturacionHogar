@@ -1,19 +1,17 @@
 using FacturacionHogar.Context;
-using FacturacionHogar.Dominio.modelos;
-using FacturacionHogar.Interfaces;
-using FacturacionHogar.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using FacturacionHogar.Configs;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("connection");
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IPdfService, PdfService>();
-var connectionString = builder.Configuration.GetConnectionString("connection");
+
+builder.Services.RegisterDomainServices();
+
 builder.Services.AddDbContext<ApiContext>(x => x.UseSqlServer(connectionString));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen((c =>

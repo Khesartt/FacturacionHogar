@@ -17,6 +17,7 @@ namespace FacturacionHogar.Services
         {
             db = _db;
         }
+
         public async Task<Response<bool>> ActualizarCliente(ClienteUpdateDto cliente)
         {
             Response<bool> response = new();
