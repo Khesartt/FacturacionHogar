@@ -1,18 +1,17 @@
-using FacturacionHogar.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using FacturacionHogar.Configs;
+using FacturacionHogar.Infraestructure.Context;
+using FacturacionHogar.Infraestructure.Configs;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("connection");
-
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<ApiContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
 
 builder.Services.RegisterDomainServices();
+builder.Services.RegisterRepositories();
 
-builder.Services.AddDbContext<ApiContext>(x => x.UseSqlServer(connectionString));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen((c =>
 {

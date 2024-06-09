@@ -1,6 +1,5 @@
-﻿using FacturacionHogar.Interfaces;
+﻿using FacturacionHogar.Application.Interfaces;
 using FacturacionHogar.models;
-using FacturacionHogar.models.DTO_s;
 using Microsoft.AspNetCore.Mvc;
 namespace FacturacionHogar.Controllers
 {
@@ -21,7 +20,7 @@ namespace FacturacionHogar.Controllers
             return pdfService.GetHtmlExample().Result;
         }
         [HttpPost("GetReciboArriendo")]
-        public Response<string> GetReciboArriendo([FromBody] PdfArriendoDto pdfData)
+        public Response<string> GetReciboArriendo([FromBody] object pdfData)
         {
             return pdfService.GeneratePdfArriendo(pdfData).Result;
         }
