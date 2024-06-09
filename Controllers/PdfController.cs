@@ -1,4 +1,5 @@
-﻿using FacturacionHogar.Application.Interfaces;
+﻿using FacturacionHogar.Application.DataTransferObjects;
+using FacturacionHogar.Application.Interfaces;
 using FacturacionHogar.models;
 using Microsoft.AspNetCore.Mvc;
 namespace FacturacionHogar.Controllers
@@ -7,22 +8,23 @@ namespace FacturacionHogar.Controllers
     [ApiController]
     public class PdfController
     {
-        private IPdfService pdfService;
+        private readonly IPdfService _pdfService;
 
-        public PdfController(IPdfService _pdfService)
+        public PdfController(IPdfService pdfService)
         {
-            pdfService = _pdfService;
+            _pdfService = pdfService;
         }
 
         [HttpGet("GetHtml")]
         public Response<string> GetHtmlExample()
         {
-            return pdfService.GetHtmlExample().Result;
+            return _pdfService.GetHtmlExample();
         }
+
         [HttpPost("GetReciboArriendo")]
-        public Response<string> GetReciboArriendo([FromBody] object pdfData)
+        public Response<string> GetReciboArriendo([FromBody] LeaseReceiptPdf pdfData)
         {
-            return pdfService.GeneratePdfArriendo(pdfData).Result;
+            return _pdfService.GeneratePdfArriendo(pdfData);
         }
     }
 }

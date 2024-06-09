@@ -11,12 +11,21 @@
         public List<T>? Results { get; set; }
         public T? Result { get; set; }
 
-        public Response()
+        public Response(T obj)
         {
             Error = defaultError;
             Message = stillAlive;
             ExistError = false;
             Results = null;
+            Result = obj;
+        }
+
+        public Response(List<T> obj)
+        {
+            Error = defaultError;
+            Message = stillAlive;
+            ExistError = false;
+            Results = obj;
             Result = default;
         }
 

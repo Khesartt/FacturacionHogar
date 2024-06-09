@@ -1,11 +1,12 @@
-﻿using FacturacionHogar.models;
+﻿using FacturacionHogar.Application.DataTransferObjects;
+using FacturacionHogar.models;
 
 namespace FacturacionHogar.Application.Interfaces
 {
     public interface IPdfService
     {
-        Task<Response<string>> GetHtmlExample();
+        Response<string> GetHtmlExample();
 
-        Task<Response<string>> GeneratePdfArriendo(object pdfData);
+         Response<string> GeneratePdfArriendo(LeaseReceiptPdf pdfData);
     }
 }
