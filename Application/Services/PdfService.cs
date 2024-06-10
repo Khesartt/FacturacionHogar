@@ -2,19 +2,23 @@
 using FacturacionHogar.Application.Interfaces;
 using FacturacionHogar.models;
 using SelectPdf;
-using System.Drawing.Printing;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace FacturacionHogar.Application.Services
 {
     public class PdfService : IPdfService
     {
-        private const string pathReciboArriendo = @"C:\Recibos\reciboArrendamiento.pdf";
+        private const string pathReciboArriendo = @"C:\Recibos";
         private const string dayFormat = "dd";
         private const string monthFormat = "MM";
         private const string yearFormat = "yyyy";
         private const string dateFormat = "dd-MM-yyyy";
         private const string numberFormat = "C";
         private const string moneySymbol = "$";
+        private const string pdfExtension = ".pdf";
+        private const string fileNameSample = "Sample";
 
         private readonly IWebHostEnvironment env;
         private readonly string[] templateRoute = { "resources", "assets", "plantilla.html" };
@@ -39,7 +43,7 @@ namespace FacturacionHogar.Application.Services
         {
             try
             {
-                GeneratePdfReciboArriendo(html);
+                GeneratePdfReciboArriendo(html, fileNameSample);
                 return new Response<string>(html);
             }
             catch (Exception ex)
@@ -58,8 +62,10 @@ namespace FacturacionHogar.Application.Services
 
             try
             {
-                GeneratePdfReciboArriendo(htmlToEdit);
-                byte[] fileBytes = File.ReadAllBytes(pathReciboArriendo);
+                string fileNamePath = NormalizeFileName(pdfData.FileName!);
+
+                GeneratePdfReciboArriendo(htmlToEdit, fileNamePath);
+                byte[] fileBytes = File.ReadAllBytes(fileNamePath);
                 string base64String = Convert.ToBase64String(fileBytes);
 
                 return new Response<string>(base64String);
@@ -90,7 +96,7 @@ namespace FacturacionHogar.Application.Services
             };
         }
 
-        private static void GeneratePdfReciboArriendo(string html)
+        private static void GeneratePdfReciboArriendo(string html, string fileName)
         {
             HtmlToPdf convert = new()
             {
@@ -107,8 +113,26 @@ namespace FacturacionHogar.Application.Services
 
             PdfDocument doc = convert.ConvertHtmlString(html);
             {
-                doc.Save(pathReciboArriendo);
+                doc.Save(fileName);
             }
+        }
+
+        private static string NormalizeFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return fileNameSample;
+            }
+
+            string normalized = Regex.Replace(fileName, @"[^\w\s]", "");
+
+            string filePathName = new string(normalized
+                                  .Normalize(NormalizationForm.FormD)
+                                  .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                                  .ToArray())
+                                  .Normalize(NormalizationForm.FormC);
+
+            return Path.Combine(pathReciboArriendo, filePathName + pdfExtension);
         }
     }
 }
