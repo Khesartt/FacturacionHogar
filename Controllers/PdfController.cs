@@ -6,7 +6,7 @@ namespace FacturacionHogar.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PdfController
+    public class PdfController : ControllerBase
     {
         private readonly IPdfService _pdfService;
 

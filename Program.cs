@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApiContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
 
-builder.Services.RegisterDomainServices();
+builder.Services.RegisterApplicationServices();
 builder.Services.RegisterRepositories();
 
 builder.Services.AddEndpointsApiExplorer();
