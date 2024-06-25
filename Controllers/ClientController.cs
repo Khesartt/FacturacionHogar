@@ -1,4 +1,5 @@
-﻿using FacturacionHogar.Application.Interfaces;
+﻿using FacturacionHogar.Application.DataTransferObjects;
+using FacturacionHogar.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FacturacionHogar.Controllers
@@ -15,12 +16,20 @@ namespace FacturacionHogar.Controllers
         }
 
 
-        [HttpGet("GetClients")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllUsers()
         {
             var clients = await this.clientService.GetClientsAsync();
 
             return this.Ok(clients);
+        }
+
+        [HttpPut("Add")]
+        public async Task<IActionResult> AddClient([FromBody] InfoClient infoClient)
+        {
+            Client client = await this.clientService.AddClientAsync(infoClient);
+
+            return this.Ok(client);
         }
     }
 }

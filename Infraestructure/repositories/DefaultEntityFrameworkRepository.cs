@@ -24,10 +24,12 @@ public class DefaultEntityFrameworkRepository<TEntity> : IDefaultRepository<TEnt
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
         await SaveChangesAsync();
+
+        return entity;
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities)

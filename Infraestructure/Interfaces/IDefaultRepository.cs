@@ -8,7 +8,7 @@ namespace FacturacionHogar.Infraestructure.Interfaces
 
         Task<TEntity> GetByIdAsync(object id);
 
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
         Task AddRangeAsync(IEnumerable<TEntity> entities);
 

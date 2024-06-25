@@ -25,5 +25,15 @@ namespace FacturacionHogar.Application.Services
 
             return result;
         }
+
+        public async Task<Client> AddClientAsync(InfoClient infoClient)
+        {
+            domain.Client client = this.mapper.Map<domain.Client>(infoClient);
+
+            client.SetDefaultExtraData();
+            client.NormalizeFullName();
+
+            return this.mapper.Map<Client>(await this.clientRepository.AddAsync(client));
+        }
     }
 }

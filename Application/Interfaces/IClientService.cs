@@ -6,5 +6,7 @@ namespace FacturacionHogar.Application.Interfaces
     {
         public Task<IEnumerable<Client>> GetClientsAsync();
 
+        public Task<Client> AddClientAsync(InfoClient infoClient);
+
     }
 }
