@@ -1,8 +1,10 @@
 ﻿using FacturacionHogar.models.domain;
+using System.Linq.Expressions;
 
 namespace FacturacionHogar.Infraestructure.Interfaces
 {
-    public interface ILeaseReceiptRepository:IDefaultRepository<LeaseReceipt>
+    public interface ILeaseReceiptRepository : IDefaultRepository<LeaseReceipt>
     {
+        public Task<LeaseReceipt?> GetByClientIdAsync(Expression<Func<LeaseReceipt, bool>> predicate);
     }
 }

@@ -19,11 +19,9 @@ namespace FacturacionHogar.Application.Services
 
         public async Task<IEnumerable<Client>> GetClientsAsync()
         {
-            IEnumerable<domain.Client> clients = await this.clientRepository.GetAllAsync();
+            var clients = await this.clientRepository.GetAllAsync();
 
-            List<Client> result = clients.Select(client => this.mapper.Map<Client>(client)).ToList();
-
-            return result;
+            return clients.Select(client => this.mapper.Map<Client>(client)).ToList();
         }
 
         public async Task<Client> AddClientAsync(InfoClient infoClient)

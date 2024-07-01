@@ -19,6 +19,7 @@ namespace FacturacionHogar.Infraestructure.Configs
             services.AddSingleton<IMapper>(sp => new Mapper(mp));
             services.AddTransient<IPdfService, PdfService>();
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<ILeaseReceiptService, LeaseReceiptService>();
 
             return services;
         }
