@@ -28,5 +28,25 @@ namespace FacturacionHogar.Controllers
                 return this.NotFound(ex.Message);
             }
         }
+
+        [HttpPost("SaveLeaseReceipt")]
+        public async Task<IActionResult> SaveAndGenerateLeaseReceiptDocument([FromBody] LeaseReceipt leaseReceipt)
+        {
+            try
+            {
+                if (leaseReceipt.ShouldSave) {
+
+                    await this.leaseReceiptService.SaveLeaseReceiptByClientAsync(leaseReceipt);
+                }
+
+                var fileData = await this.leaseReceiptService.GenerateLeaseReceiptBase64ByClientAsync(leaseReceipt); 
+
+                return Ok(fileData);
+            }
+            catch (ApplicationException ex)
+            {
+                return this.NotFound(ex.Message);
+            }
+        }
     }
 }

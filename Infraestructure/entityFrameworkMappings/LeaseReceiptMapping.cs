@@ -19,7 +19,7 @@ namespace FacturacionHogar.Infraestructure.entityFrameworkMappings
 
             builder.Property(x => x.IdClient).HasColumnType("bigint");
 
-            builder.Property(x => x.LeaseAmount).HasColumnType("varchar(500)");
+            builder.Property(x => x.LeaseAmount).HasColumnType("bigint");
             builder.Property(x => x.ReceiptNumber).HasColumnType("varchar(500)");
             builder.Property(x => x.ReceiptDate).HasColumnType("datetime");
             builder.Property(x => x.LeaseAmountInWords).HasColumnType("varchar(500)");

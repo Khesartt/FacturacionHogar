@@ -4,11 +4,11 @@
     {
         public long ReceiptId { get; set; }
 
-        public long ClientId { get; set; }
+        public long IdClient { get; set; }
 
-        public string? FullNameClient { get; set; }
+        public string? ClientName { get; set; }
 
-        public string? LeaseAmount { get; set; }
+        public int LeaseAmount { get; set; }
 
         public string? ReceiptNumber { get; set; }
 
@@ -17,6 +17,8 @@
         public string? LeaseDescription { get; set; }
 
         public string? LeaseAddress { get; set; }
+
+        public bool ShouldSave { get; set; }
 
         public DateTime ReceiptDate { get; set; }
 

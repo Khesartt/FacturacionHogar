@@ -30,8 +30,9 @@ namespace FacturacionHogar.Application.Mappings
 
             CreateMap<domain.LeaseReceipt, dto.LeaseReceipt>()
                        .ForMember(dest => dest.ReceiptId, opt => opt.MapFrom(src => src.Id))
-                       .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.IdClient))
-                       .ForMember(dest => dest.FullNameClient, opt => opt.Ignore())
+                       .ForMember(dest => dest.IdClient, opt => opt.MapFrom(src => src.IdClient))
+                       .ForMember(dest => dest.ClientName, opt => opt.Ignore())
+                       .ForMember(dest => dest.ShouldSave, opt => opt.Ignore())
                        .ForMember(dest => dest.LeaseAmount, opt => opt.MapFrom(src => src.LeaseAmount))
                        .ForMember(dest => dest.ReceiptNumber, opt => opt.MapFrom(src => src.ReceiptNumber))
                        .ForMember(dest => dest.LeaseAmountInWords, opt => opt.MapFrom(src => src.LeaseAmountInWords))
@@ -40,6 +41,19 @@ namespace FacturacionHogar.Application.Mappings
                        .ForMember(dest => dest.ReceiptDate, opt => opt.MapFrom(src => src.ReceiptDate))
                        .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                        .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
+
+            CreateMap<dto.LeaseReceipt, domain.LeaseReceipt>()
+                       .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ReceiptId))
+                       .ForMember(dest => dest.IdClient, opt => opt.MapFrom(src => src.IdClient))
+                       .ForMember(dest => dest.LeaseAmount, opt => opt.MapFrom(src => src.LeaseAmount))
+                       .ForMember(dest => dest.ReceiptNumber, opt => opt.MapFrom(src => src.ReceiptNumber))
+                       .ForMember(dest => dest.LeaseAmountInWords, opt => opt.MapFrom(src => src.LeaseAmountInWords))
+                       .ForMember(dest => dest.LeaseDescription, opt => opt.MapFrom(src => src.LeaseDescription))
+                       .ForMember(dest => dest.LeaseAddress, opt => opt.MapFrom(src => src.LeaseAddress))
+                       .ForMember(dest => dest.ReceiptDate, opt => opt.MapFrom(src => src.ReceiptDate))
+                       .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+                       .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
+                       .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => DateTime.UtcNow));
         }
     }
 }

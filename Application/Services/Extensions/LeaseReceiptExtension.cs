@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Text;
 using SelectPdf;
-using System.Drawing.Printing;
+using System.Security.Cryptography;
 
 namespace FacturacionHogar.Application.Services.Extensions
 {
@@ -19,7 +19,7 @@ namespace FacturacionHogar.Application.Services.Extensions
         private const string pdfExtension = ".pdf";
         private const string fileNameSample = "Sample";
 
-        public static Dictionary<string, string> GetReplacementsWords(LeaseReceiptPdf pdfData)
+        public static Dictionary<string, string> GetReplacementsWords(this LeaseReceipt pdfData)
         {
             return new Dictionary<string, string>
             {
@@ -38,33 +38,38 @@ namespace FacturacionHogar.Application.Services.Extensions
                {"@anioAReciboVar", pdfData.EndDate.ToString(yearFormat)}
             };
         }
-        public static string NormalizeFileName(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return fileNameSample + new DateTime().ToString(dateFormat);
-            }
 
+        public static string NormalizeFileName(this string fileName)
+        {
             string normalized = Regex.Replace(fileName, @"[^\w\s]", "");
 
-            string filePathName = new string(normalized.Normalize(NormalizationForm.FormD)
+            string fileNameNormalized = new string(normalized.Normalize(NormalizationForm.FormD)
                                                        .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                                                        .ToArray())
                                                        .Normalize(NormalizationForm.FormC);
 
-            return Path.Combine(pathReciboArriendo, filePathName + pdfExtension);
+            return fileNameNormalized;
         }
 
-        public static string ConvertStringToPdfBase64(HtmlToPdf options, string content)
+        public static async Task<string> ConvertStringToPdfBase64Async(this HtmlToPdf options, string content)
         {
             PdfDocument doc = options.ConvertHtmlString(content);
 
             using var memoryStream = new MemoryStream();
-
             doc.Save(memoryStream);
             doc.Close();
 
-            return Convert.ToBase64String(memoryStream.ToArray());
+            memoryStream.Position = 0;
+
+            using var base64Transform = new ToBase64Transform();
+            using var cryptoStream = new CryptoStream(memoryStream, base64Transform, CryptoStreamMode.Read);
+            using var resultStream = new MemoryStream();
+
+            await cryptoStream.CopyToAsync(resultStream).ConfigureAwait(false);
+
+            string base64String = Encoding.ASCII.GetString(resultStream.ToArray());
+
+            return base64String;
         }
     }
 }

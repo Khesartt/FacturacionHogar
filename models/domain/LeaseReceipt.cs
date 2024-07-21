@@ -4,7 +4,7 @@
     {
         public long Id { get; set; }
         public long IdClient { get; set; }
-        public string? LeaseAmount { get; set; }
+        public int LeaseAmount { get; set; }
         public string? ReceiptNumber { get; set; }
         public string? LeaseAmountInWords { get; set; }
         public string? LeaseDescription { get; set; }
