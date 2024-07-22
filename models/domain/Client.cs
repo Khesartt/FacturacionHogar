@@ -7,6 +7,17 @@ namespace FacturacionHogar.models.domain
     {
         private const string defaultEmail = "default@default.com";
 
+        public Client(string name)
+        {
+            this.SetDefaultExtraData();
+            this.FullName = name;
+            this.UpdateDate = DateTime.Now;
+        }
+
+        public Client()
+        {
+        }
+
         public long Id { get; set; }
 
         public string? FullName { get; set; }
@@ -20,14 +31,5 @@ namespace FacturacionHogar.models.domain
         public DateTime UpdateDate { get; set; }
 
         public void SetDefaultExtraData() => this.Email = defaultEmail;
-
-        public void NormalizeFullName()
-        {
-            this.FullName ??= string.Empty;
-
-            this.FullName = this.FullName.RemoveDiacritics().ToLowerInvariant();
-            this.FullName = Regex.Replace(this.FullName, @"[^a-zA-Z\s]", string.Empty);
-            this.FullName = Regex.Replace(this.FullName, @"\s+", " ").Trim();
-        }
     }
 }

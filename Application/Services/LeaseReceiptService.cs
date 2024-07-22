@@ -88,6 +88,12 @@ namespace FacturacionHogar.Application.Services
 
         public async Task SaveLeaseReceiptByClientAsync(LeaseReceipt leaseReceiptDto)
         {
+            await this.SaveLeaseReceiptAsync(leaseReceiptDto);
+            await this.SaveClientLeaseReceiptAsync(leaseReceiptDto.IdClient, leaseReceiptDto.ClientName);
+        }
+
+        private async Task SaveLeaseReceiptAsync(LeaseReceipt leaseReceiptDto)
+        {
             try
             {
                 var existingLeaseReceipt = await this.leaseReceiptRepository.GetByIdAsync(leaseReceiptDto.ReceiptId);
@@ -95,32 +101,48 @@ namespace FacturacionHogar.Application.Services
                 if (existingLeaseReceipt != null)
                 {
                     this.mapper.Map(leaseReceiptDto, existingLeaseReceipt);
-
-                    await this.leaseReceiptRepository.UpdateAsync(existingLeaseReceipt);
+                    await leaseReceiptRepository.UpdateAsync(existingLeaseReceipt);
                 }
                 else
                 {
-                    domain.LeaseReceipt leaseReceipt = this.mapper.Map<domain.LeaseReceipt>(leaseReceiptDto);
-                    
-                    await this.leaseReceiptRepository.AddAsync(leaseReceipt);
+                    var newLeaseReceipt = this.mapper.Map<domain.LeaseReceipt>(leaseReceiptDto);
+                    await leaseReceiptRepository.AddAsync(newLeaseReceipt);
                 }
-
-                var client = await this.clientRepository.GetByIdAsync(leaseReceiptDto.IdClient);
-
-                client.FullName =  leaseReceiptDto.ClientName;
-
-                await this.clientRepository.UpdateAsync(client);
-
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error has appear near trying to save the leaseReceipt", ex);
+                throw new ApplicationException("An error occurred while saving the lease receipt.", ex);
+            }
+        }
+
+        private async Task SaveClientLeaseReceiptAsync(long IdClient, string name)
+        {
+            try
+            {
+                var existingClient = await this.clientRepository.GetByIdAsync(IdClient);
+
+                if (existingClient !=null)
+                {
+                    existingClient.FullName = name.NormalizeString();
+                    await this.clientRepository.UpdateAsync(existingClient);
+                }
+                else
+                {
+                    var newClient = new domain.Client(name.NormalizeString());
+
+                    await this.clientRepository.AddAsync(newClient);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("An error occurred while saving the client lease receipt.", ex);
             }
         }
 
         private static string GetFileNameByLeaseReceipt(LeaseReceipt leaseReceipt)
         {
-            return $"{leaseReceipt.ReceiptNumber}-{leaseReceipt.ClientName!.NormalizeFileName()}-({leaseReceipt.ReceiptDate.ToString(dateFormat)})";
+            return $"{leaseReceipt.ReceiptNumber}-{leaseReceipt.ClientName!.NormalizeString()}-({leaseReceipt.ReceiptDate.ToString(dateFormat)})";
         }
     }
 }

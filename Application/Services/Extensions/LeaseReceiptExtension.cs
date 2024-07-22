@@ -39,18 +39,6 @@ namespace FacturacionHogar.Application.Services.Extensions
             };
         }
 
-        public static string NormalizeFileName(this string fileName)
-        {
-            string normalized = Regex.Replace(fileName, @"[^\w\s]", "");
-
-            string fileNameNormalized = new string(normalized.Normalize(NormalizationForm.FormD)
-                                                       .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                                                       .ToArray())
-                                                       .Normalize(NormalizationForm.FormC);
-
-            return fileNameNormalized;
-        }
-
         public static async Task<string> ConvertStringToPdfBase64Async(this HtmlToPdf options, string content)
         {
             PdfDocument doc = options.ConvertHtmlString(content);

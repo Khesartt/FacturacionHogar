@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace FacturacionHogar.Application.Services.Extensions
 {
@@ -26,6 +27,18 @@ namespace FacturacionHogar.Application.Services.Extensions
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public static string NormalizeString(this string name)
+        {
+            string normalized = Regex.Replace(name, @"[^\w\s]", "");
+
+            string NameNormalized = new string(normalized.Normalize(NormalizationForm.FormD)
+                                                       .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                                                       .ToArray())
+                                                       .Normalize(NormalizationForm.FormC);
+
+            return NameNormalized;
         }
     }
 }

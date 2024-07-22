@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FacturacionHogar.Application.DataTransferObjects;
 using FacturacionHogar.Application.Interfaces;
+using FacturacionHogar.Application.Services.Extensions;
 using FacturacionHogar.Infraestructure.Interfaces;
 using domain = FacturacionHogar.models.domain;
 
@@ -29,7 +30,7 @@ namespace FacturacionHogar.Application.Services
             domain.Client client = this.mapper.Map<domain.Client>(infoClient);
 
             client.SetDefaultExtraData();
-            client.NormalizeFullName();
+            client.FullName.NormalizeString();
 
             return this.mapper.Map<Client>(await this.clientRepository.AddAsync(client));
         }
