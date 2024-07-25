@@ -19,9 +19,17 @@ namespace FacturacionHogar.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var clients = await this.clientService.GetClientsAsync();
+            try
+            {
+                var clients = await this.clientService.GetClientsAsync();
 
-            return this.Ok(clients);
+                return this.Ok(clients);
+            }
+            catch (Exception ex )
+            {
+
+                return this.BadRequest(ex);
+            }
         }
 
         [HttpPut("Add")]
