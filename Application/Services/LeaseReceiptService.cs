@@ -10,7 +10,7 @@ namespace FacturacionHogar.Application.Services
 {
     public class LeaseReceiptService : ILeaseReceiptService
     {
-        private const int margin = -300;
+        private const int margin = -350;
         private const string defaultExtensionLeaseReceipt = ".pdf";
         private const string defaultTypeLeaseReceipt = "application/pdf";
         private const string dateFormat = "dd-MM-yyyy";
@@ -44,8 +44,8 @@ namespace FacturacionHogar.Application.Services
                 {
                    PdfPageSize = PdfPageSize.Note,
                    PdfPageOrientation = PdfPageOrientation.Landscape,
-                   MarginTop = 0,
-                   MarginLeft = 0,
+                   MarginTop = 10,
+                   MarginLeft = 25,
                    MarginRight = margin,
                    MarginBottom = margin,
                    MinPageLoadTime = 3

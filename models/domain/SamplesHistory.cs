@@ -11,5 +11,7 @@ namespace FacturacionHogar.models.domain
         public DateTime SampleDate { get; set; }
 
         public decimal Sample { get; set; }
+
+        public long ClientId { get; set; }
     }
 }
