@@ -3,10 +3,15 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using FacturacionHogar.Infraestructure.Context;
 using FacturacionHogar.Infraestructure.Configs;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.AddDbContext<ApiContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
 
 builder.Services.RegisterApplicationServices();

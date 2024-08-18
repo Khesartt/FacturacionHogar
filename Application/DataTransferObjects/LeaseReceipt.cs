@@ -1,4 +1,7 @@
-﻿namespace FacturacionHogar.Application.DataTransferObjects
+﻿using FacturacionHogar.models.enumerators;
+using System.Text.Json.Serialization;
+
+namespace FacturacionHogar.Application.DataTransferObjects
 {
     public class LeaseReceipt
     {
@@ -25,5 +28,8 @@
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public  LeaseReceiptType LeaseReceiptType { get; set; }
     }
 }

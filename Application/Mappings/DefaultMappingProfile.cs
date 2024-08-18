@@ -40,7 +40,8 @@ namespace FacturacionHogar.Application.Mappings
                        .ForMember(dest => dest.LeaseAddress, opt => opt.MapFrom(src => src.LeaseAddress))
                        .ForMember(dest => dest.ReceiptDate, opt => opt.MapFrom(src => src.ReceiptDate))
                        .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
-                       .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
+                       .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
+                       .ForMember(dest => dest.LeaseReceiptType, opt => opt.MapFrom(src => src.LeaseReceiptType));
 
             CreateMap<dto.LeaseReceipt, domain.LeaseReceipt>()
                        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ReceiptId))
@@ -53,7 +54,8 @@ namespace FacturacionHogar.Application.Mappings
                        .ForMember(dest => dest.ReceiptDate, opt => opt.MapFrom(src => src.ReceiptDate))
                        .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                        .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
-                       .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => DateTime.UtcNow));
+                       .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => DateTime.UtcNow))
+                       .ForMember(dest => dest.LeaseReceiptType, opt => opt.MapFrom(src => src.LeaseReceiptType));
         }
     }
 }

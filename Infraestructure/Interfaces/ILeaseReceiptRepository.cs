@@ -5,6 +5,6 @@ namespace FacturacionHogar.Infraestructure.Interfaces
 {
     public interface ILeaseReceiptRepository : IDefaultRepository<LeaseReceipt>
     {
-        public Task<LeaseReceipt?> GetByClientIdAsync(Expression<Func<LeaseReceipt, bool>> predicate);
+        public Task<LeaseReceipt?> GetByClientIdAndLeaseTypeAsync(Expression<Func<LeaseReceipt, bool>> predicate);
     }
 }

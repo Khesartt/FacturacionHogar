@@ -1,5 +1,6 @@
 ﻿using FacturacionHogar.Application.DataTransferObjects;
 using FacturacionHogar.Application.Interfaces;
+using FacturacionHogar.models.enumerators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FacturacionHogar.Controllers
@@ -14,12 +15,12 @@ namespace FacturacionHogar.Controllers
             this.leaseReceiptService = leaseReceiptService;
         }
 
-        [HttpGet("GetLastReceipt/{clientId}")]
-        public async Task<IActionResult> GetLastLeaseReceiptByClientAsync(long clientId)
+        [HttpGet("GetLastReceipt/{clientId}/{leaseReceiptType}")]
+        public async Task<IActionResult> GetLastLeaseReceiptByClientAsync(long clientId, LeaseReceiptType leaseReceiptType)
         {
             try
             {
-                var leaseReceipt = await this.leaseReceiptService.GetLastLeaseReceiptByClientAsync(clientId);
+                var leaseReceipt = await this.leaseReceiptService.GetLastLeaseReceiptByClientAsync(clientId, leaseReceiptType);
 
                 return Ok(leaseReceipt);
             }
