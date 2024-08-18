@@ -57,7 +57,9 @@ namespace FacturacionHogar.Application.Services
 
         public async Task<LeaseReceipt> GetLastLeaseReceiptByClientAsync(long clientId, LeaseReceiptType leaseReceiptType)
         {
-            var leaseReceiptByDomain = await this.leaseReceiptRepository.GetByClientIdAndLeaseTypeAsync(lease => lease.IdClient == clientId && lease.LeaseReceiptType == leaseReceiptType)
+            var leaseReceiptByDomain = await this.leaseReceiptRepository.GetByClientIdAndLeaseTypeAsync(lease =>
+                                                                                                        lease.IdClient == clientId &&
+                                                                                                        lease.LeaseReceiptType == leaseReceiptType)
                                         ?? throw new KeyNotFoundException($"LeaseReceipt for client ID {clientId} and {leaseReceiptType} not found.");
 
             var client = await this.clientRepository.GetByIdAsync(clientId)
@@ -97,7 +99,9 @@ namespace FacturacionHogar.Application.Services
         {
             try
             {
-                var existingLeaseReceipt = await this.leaseReceiptRepository.GetByIdAsync(leaseReceiptDto.ReceiptId);
+                var existingLeaseReceipt = await this.leaseReceiptRepository.GetByClientIdAndLeaseTypeAsync(lease => 
+                                                                                                            lease.IdClient == leaseReceiptDto.IdClient && 
+                                                                                                            lease.LeaseReceiptType == leaseReceiptDto.LeaseReceiptType);
 
                 if (existingLeaseReceipt != null)
                 {
