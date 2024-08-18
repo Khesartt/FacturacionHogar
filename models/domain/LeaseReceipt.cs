@@ -1,4 +1,6 @@
-﻿namespace FacturacionHogar.models.domain
+﻿using FacturacionHogar.models.enumerators;
+
+namespace FacturacionHogar.models.domain
 {
     public class LeaseReceipt
     {
@@ -13,5 +15,6 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime LastUpdated { get; set; }
+        public LeaseReceiptType LeaseReceiptType { get; set; }
     }
 }

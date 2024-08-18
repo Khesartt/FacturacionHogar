@@ -12,7 +12,7 @@ namespace FacturacionHogar.Infraestructure.repositories
         {
         }
 
-        public async Task<LeaseReceipt?> GetByClientIdAsync(Expression<Func<LeaseReceipt, bool>> predicate)
+        public async Task<LeaseReceipt?> GetByClientIdAndLeaseTypeAsync(Expression<Func<LeaseReceipt, bool>> predicate)
         {
             return await this._dbSet.Where(predicate).FirstOrDefaultAsync();
         }

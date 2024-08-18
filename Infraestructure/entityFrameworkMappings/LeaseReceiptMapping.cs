@@ -28,6 +28,7 @@ namespace FacturacionHogar.Infraestructure.entityFrameworkMappings
             builder.Property(x => x.StartDate).HasColumnType("datetime");
             builder.Property(x => x.EndDate).HasColumnType("datetime");
             builder.Property(x => x.LastUpdated).HasColumnType("datetime");
+            builder.Property(x => x.LeaseReceiptType).HasColumnType("varchar(500)");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace FacturacionHogar.Application.DataTransferObjects
+﻿using FacturacionHogar.models.enumerators;
+
+namespace FacturacionHogar.Application.DataTransferObjects
 {
     public class LeaseReceipt
     {
@@ -25,5 +27,7 @@
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public  LeaseReceiptType LeaseReceiptType { get; set; }
     }
 }

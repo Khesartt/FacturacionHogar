@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using SelectPdf;
 using System.Security.Cryptography;
+using FacturacionHogar.models.enumerators;
 
 namespace FacturacionHogar.Application.Services.Extensions
 {
@@ -18,11 +19,14 @@ namespace FacturacionHogar.Application.Services.Extensions
         private const string moneySymbol = "$";
         private const string pdfExtension = ".pdf";
         private const string fileNameSample = "Sample";
+        private static readonly Dictionary<LeaseReceiptType, string> titles = new(){{ LeaseReceiptType.Rent, "RECIBO DE ARRENDAMIENTO" },
+                                                                                    { LeaseReceiptType.Service, "RECIBO POR CONSUMO DE SERVICIOS" }};
 
         public static Dictionary<string, string> GetReplacementsWords(this LeaseReceipt pdfData)
         {
             return new Dictionary<string, string>
             {
+               {"@reciboTypeVar", titles[pdfData.LeaseReceiptType]},
                {"@valorReciboVar", pdfData.LeaseAmount.ToString(numberFormat).Replace(moneySymbol, string.Empty)},
                {"@NumeroReciboVar", pdfData.ReceiptNumber!},
                {"@FechaReciboVar", pdfData.ReceiptDate.ToString(dateFormat)},
