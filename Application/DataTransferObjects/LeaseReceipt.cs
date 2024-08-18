@@ -1,4 +1,5 @@
 ﻿using FacturacionHogar.models.enumerators;
+using System.Text.Json.Serialization;
 
 namespace FacturacionHogar.Application.DataTransferObjects
 {
@@ -28,6 +29,7 @@ namespace FacturacionHogar.Application.DataTransferObjects
 
         public DateTime EndDate { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public  LeaseReceiptType LeaseReceiptType { get; set; }
     }
 }
